@@ -75,17 +75,10 @@ Using a simple hamming distance formula, hash strings are compared and, within a
 
 <img src="https://raw.githubusercontent.com/jslok/cardscanner/master/media/demo_stages.webp"/>
 
+[![Pokémon Binder Full Video](https://img.youtube.com/vi/u4uVJfR20iw/maxresdefault.jpg)](https://www.youtube.com/watch?v=u4uVJfR20iw)
+
 **Conclusion**
 We combine the versatility of a machine learning model with the speed of OpenCV and Image hashing to create the fastest and most versatile card scanner to my knowledge. When new cards are released, the hash database is easily updated while the model and all detection logic remains unchanged. The database used in this proof of concept only consists of Pokémon cards, but it can easily be expended to include any other types of trading cards and other types of products as well.
-
-**Todo:**
-Performance Optimization
-⁃ Quantization - reduce float32 precision to int8
-⁃ Improve hashing mechanisms
-⁃ VP Tree to speed up database search
-Rewrite for mobile in react-native (C++)
-⁃ Deploy model to TF Lite, possibly Core ML for iOS
-⁃ Utilize GPU acceleration
 
 **Why not use deep learning for the whole process including identification?**
 This would mean training a model not on a single class as I did, but on almost 20,000 classes, one for each card. Even at a mere (and likely inadequate) 1000 images per class/card, that would equal a huge training dataset of 20 million images. Not only that, but each time new cards are released, the model would need to be retrained on those new cards and redeployed. Inference with large models requires enormous amounts of memory and CPU power and may still take several seconds to produce a result. Both inference and training time would be much longer.
