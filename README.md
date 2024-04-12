@@ -75,6 +75,7 @@ Using a simple hamming distance formula, hash strings are compared and, within a
 
 <img src="https://raw.githubusercontent.com/jslok/cardscanner/master/media/demo_stages.webp"/>
 
+**Pokémon Binder Full Video**
 [![Pokémon Binder Full Video](https://img.youtube.com/vi/u4uVJfR20iw/maxresdefault.jpg)](https://www.youtube.com/watch?v=u4uVJfR20iw)
 
 **Conclusion**
