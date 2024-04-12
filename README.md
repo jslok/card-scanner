@@ -11,7 +11,7 @@ There are 3 main steps in the process that I focused on:
 
 1.  Object Detection and Segmentation
 2.  Perspective Transform
-3.  Image Hashing and Identification
+3.  Perceptual Hashing
 
 ## 1. Object Detection and Segmentation
 
@@ -71,13 +71,13 @@ I also integrated a simple object tracking algorithm, SORT, to track objects bet
 
 The ML model outputs a binary mask of each detected object, aka the segmentation mask. We need to isolate the card from the rest of the image based on the mask and correct its orientation and any skewing so we can compare it to the database. A mask is a matrix grid with dimensions matching the image dimensions in pixels. Each index contains a binary integer (or float representing confidence score) representing whether or not that pixel is part of the object detected. We use Open CV to take each mask and use edge detection and contouring against the mask to isolate the card from the original image. Since we expect cards to have four straight edges, we can filter out any detections that have more or less than four edges. The four corners of the card are identified and pulled to reach the corners of the image canvas. This is perspective transform. A card that was skewed or crooked has been corrected to appear as if it is being viewed perfectly straight on. The card image is also oriented to portrait in this process. It may or may not be upside down, but we can worry about this later.
 
-## 3. Image Hashing and Identification
+## 3. Perceptual Hashing
 
-Now how can we take the fully processed image of a card and find its match in the database? A blurry image pulled, stretched, and with some inconsistent lighting will never perfectly match pixel to pixel with the official digital glam photos. The solution is image hashing. We use an algorithm to hash an image into a hexadecimal string which is stored in a database and compared using a hamming distance formula. Images that are visually similar will have similar hash strings. Small changes to an image will result in only small changes to the hash. This is different from cryptographic hashing such as with passwords where small changes to your input can and will result in big or even complete changes to your output so it will be indiscernible.
+Now how can we take the fully processed image of a card and find its match in the database? A blurry image pulled, stretched, and with some inconsistent lighting will never perfectly match pixel to pixel with the official digital glam photos. The solution is image hashing. We use an algorithm to hash an image into a hexadecimal string which is stored in a database and compared using a hamming distance formula. Images that are visually similar will have similar hashes. Small changes to an image will result in only small changes to the hash. This is different from cryptographic hashing such as with passwords where small changes to your input can and will result in big or even complete changes to your output so it will be indiscernible.
 
 Using only a single hashing algorithm at the default 64 bit length resulted in too many hash collisions when using such a large database of almost 20,000 cards. Two cards may not look similar, but still end up with similar hash strings. To solve this issue, I combined two different hashing algorithms together, dHash and pHash, and increased the hash length of each. Combining two algorithms together eliminates issues with a single algorithm resulting in similar hashes for non-similar cards. 128 bit length provides double the granularity over 64 bit as there is more data to compare.
 
-Using a simple hamming distance formula, hash strings are compared and, within a given threshold, the pair with the most similarities is returned as the match. We can handle possible upside down cards here by rotating the card image and hashing it again if no match was found. The threshold is adjusted to provide a good balance between allowing some interference (i.e. brightness, glare, overlap, fingers over cards) while not giving too many false positive matches.
+Using a simple hamming distance formula, hash strings are compared and, within a given threshold, the pair with the most similarities is returned as the match. We can handle possible upside down cards here by rotating the card image 180 degrees and hashing it again if no match was found. The threshold is adjusted to provide a good balance between allowing some interference (i.e. brightness, glare, overlap, fingers over cards) while not giving too many false positive matches.
 
 <img src="https://raw.githubusercontent.com/jslok/cardscanner/master/media/demo_stages.webp"/>
 
