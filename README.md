@@ -7,7 +7,7 @@
 
 This is a Pokémon card scanner that can use any video input such as webcam or phone camera to scan a card or multiple cards real-time and identify them against the complete database of currently about 20,000 English Pokémon cards. It is able to identify all types including holos, reverse holos, full art cards, etc. purely via machine learning and imaging techniques. No OCR (text recognition) is used whatsoever. This is a working proof of concept built in Python with the goal of eventually integrating it into my existing Pokémon card collection tracking app built with React Native.
 
-There are 4 major steps to the process:
+There are 3 main steps in the process that I focused on:
 
 1.  Object Detection and Segmentation
 2.  Perspective Transform
