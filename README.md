@@ -75,7 +75,7 @@ Using a simple hamming distance formula, hash strings are compared and, within a
 
 <img src="https://raw.githubusercontent.com/jslok/cardscanner/master/media/demo_stages.webp"/>
 
-[![Pokémon Binder Full Video](https://img.youtube.com/vi/u4uVJfR20iw/maxresdefault.jpg)](https://www.youtube.com/watch?v=u4uVJfR20iw)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/u4uVJfR20iw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 **Conclusion**
 We combine the versatility of a machine learning model with the speed of OpenCV and Image hashing to create the fastest and most versatile card scanner to my knowledge. When new cards are released, the hash database is easily updated while the model and all detection logic remains unchanged. The database used in this proof of concept only consists of Pokémon cards, but it can easily be expended to include any other types of trading cards and other types of products as well.
