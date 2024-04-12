@@ -106,3 +106,4 @@ Remember, the goal of this project is to be able to run on-device inference real
 - [OpenMMLab](https://github.com/open-mmlab/mmdetection)
 - [OpenCV](https://opencv.org/)
 - [abewley SORT](https://github.com/abewley/sort)
+- [ImageHash](https://pypi.org/project/ImageHash/)
