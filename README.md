@@ -5,12 +5,12 @@
   <img src="https://raw.githubusercontent.com/jslok/card-scanner/master/media/demo_mat.webp" width="400" />
 </p>
 
-This is a Pokémon card scanner that can use any video input such as webcam or phone camera to scan a card or multiple cards real-time and identify them against the complete database of currently about 20,000 English Pokémon cards. It is able to identify all types including holos, reverse holos, full art cards, etc. purely via deep learning and imaging techniques. No OCR (text recognition) is used whatsoever. This is a working proof of concept built in Python with the goal of eventually integrating it into my existing Pokémon card collection tracking app built with React Native.
+This is a Pokémon card scanner that can use any video input such as webcam or phone camera to scan a card or multiple cards real-time and identify them against the complete database of currently about 20,000 English Pokémon cards. It is able to identify all types including holos, reverse holos, full art cards, etc. purely via deep learning and imaging techniques. No OCR (text recognition) is used. This is a working proof of concept built in Python with the goal of eventually porting and integrating it into my existing React Native Pokémon card collection tracking app.
 
 There are 3 main steps in the process that I focused on:
 
 1.  Object Detection and Segmentation - Find the cards
-2.  Perspective Transform - Get the cards
+2.  Perspective Transform - Process the cards
 3.  Image Hashing - Match the cards
 
 ## 1. Object Detection and Segmentation
@@ -19,11 +19,11 @@ I trained a deep learning model to do the detection phase. Object detection mode
 
 **Training**
 
-I generated a training dataset of 50,000 images by repeatedly compositing 2-5 random card images onto a random background. Some skew, rotation, scaling, and even overlap was applied to each card to provide extra variance and mimic real life scenarios. Early iterations of the model were trained on a dataset of only 5,000 images having 1 card each, limiting its versatility. The larger dataset and fewer epochs helped to greatly improve the model's precision. I also omitted common and uncommon cards to steer the dataset towards more rare types like full art cards that are more likely to be scanned by users and also don't have a simple yellow border. Only 1 class is needed, “card”.
+I generated a training dataset of 50,000 images by repeatedly compositing 2-5 random card images onto a random background. Some skew, rotation, scaling, and overlap was applied to each card to provide variance and mimic real life scenarios. Early iterations of the model were trained on a dataset of only 5,000 images having 1 card each, limiting its versatility. The larger dataset and fewer epochs helped to greatly improve the model's precision and ability to generalize. I also omitted common and uncommon cards to steer the dataset towards more rare types like full art cards that are more likely to be scanned by users and also don't have a simple yellow border. Only 1 class is needed, “card”.
 
-Training time for 20 epochs was about 40 hours though after about 10 epochs, accuracy even noticeably decreased as the model was subjected to overfitting to the training data. I achieved a segmentation mask mean average precision (mAP) of .90, which is extremely good. I believe the very regular shape and smooth edges of the cards have a lot to do with the unusually high mAP.
+Training time for 20 epochs was about 40 hours though after about 10 epochs, accuracy noticeably decreased as the model suffered from overfitting to the training data. The model achieved a segmentation mask mean average precision (mAP) of .90, which is extremely good. I believe the very regular shape and smooth edges of the cards have a lot to do with the unusually high mAP.
 
-The following chart shows the training log of loss (lower is better) which is the difference between the prediction and actuality. The model improves then levels off incredibly fast, again likely due to the very simple shape of the cards.
+The following chart shows the training log of loss (lower is better) which is the difference between the prediction and actuality. The model improves incredibly fast then levels off, again likely due to the very simple shape of the cards.
 <img src="https://raw.githubusercontent.com/jslok/card-scanner/master/media/chart.png" alt="Training Log" style="max-width: 300px; height: auto;">
 
 Examples of training images with segmentation annotations drawn
@@ -45,7 +45,7 @@ Examples of training images with segmentation annotations drawn
   </tr>
 </table>
 
-You can see clear improvements in the inference results after training optimizations to reach .90 mask mAP (top right) and the model can even predict cards that are partially occluded (bottom right).
+You can see clear improvements in the inference results after training optimizations to reach .90 mask mAP (top right) and the model can even predict edges of cards that are partially occluded (bottom right).
 
 <table style="width: 400px; text-align: center; border: 0;">
   <tr>
@@ -69,7 +69,7 @@ I also integrated a simple object tracking algorithm, SORT, to track objects bet
 
 ## 2. Perspective Transform
 
-The ML model outputs a segmentation mask of each detected object. We need to isolate the card from the rest of the image based on the mask and correct its orientation and any skewing so we can compare it to the database. A segmentation mask is a matrix grid with dimensions matching the image dimensions in pixels. Each index contains a binary integer (or float representing confidence score) representing whether or not that pixel is part of the object detected. We use Open CV to take each mask and use edge detection and contouring against the mask to isolate the card from the original image. Since we expect cards to have four straight edges, we can filter out any detections that have more or less than four edges. The four corners of the card are identified and pulled to reach the corners of the image canvas. This is perspective transform. A card that was skewed or crooked has been corrected to appear as if it is being viewed perfectly straight on. The card image is also oriented to portrait in this process. It may or may not be upside down, but we can worry about this later.
+The model outputs a segmentation mask of each detected object. We need to isolate the card from the rest of the image based on the mask and correct its orientation and any skewing so we can compare it to the database. A segmentation mask is a matrix grid with dimensions matching the image dimensions in pixels. Each index contains a binary integer representing whether or not that pixel is part of the object detected. We pass each mask to OpenCV and use edge detection and contouring to isolate the card out of the original image. Since we expect cards to be a rectangle with four straight edges, we can filter out any detections that have more or less than four edges. The four corners of the card are identified and pulled to reach the corners of the image canvas. This is perspective transform. A card that was skewed or crooked has been corrected to appear as if it is being viewed perfectly straight on. The card image is also oriented to portrait in this process. It may or may not be upside down, but we can worry about this later.
 
 ## 3. Image Hashing
 
