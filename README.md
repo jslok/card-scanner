@@ -26,7 +26,7 @@ Training time for 20 epochs was about 40 hours though after about 10 epochs, acc
 The following chart shows the training log of loss (lower is better) which is the difference between the prediction and actuality. The model improves incredibly fast then levels off, again likely due to the very simple shape of the cards.
 <img src="https://raw.githubusercontent.com/jslok/card-scanner/master/media/chart.png" alt="Training Log" style="max-width: 300px; height: auto;">
 
-Examples of training images with segmentation annotations drawn
+Examples of training images with segmentation annotations drawn:
 
 <table style="width: 100%; text-align: center; border: 0;">
   <tr>
@@ -69,7 +69,7 @@ I also integrated a simple object tracking algorithm, SORT, to track objects bet
 
 ## 2. Perspective Transform
 
-The model outputs a segmentation mask of each detected object. We need to isolate the card from the rest of the image based on the mask and correct its orientation and any skewing so we can compare it to the database. A segmentation mask is a matrix grid with dimensions matching the image dimensions in pixels. Each index contains a binary integer representing whether or not that pixel is part of the object detected. We pass each mask to OpenCV and use edge detection and contouring to isolate the card out of the original image. Since we expect cards to be a rectangle with four straight edges, we can filter out any detections that have more or less than four edges. The four corners of the card are identified and pulled to reach the corners of the image canvas. This is perspective transform. A card that was skewed or crooked has been corrected to appear as if it is being viewed perfectly straight on. The card image is also oriented to portrait in this process. It may or may not be upside down, but we can worry about this later.
+The model outputs a segmentation mask of each detected object. We need to isolate the card from the rest of the image based on the mask and correct its orientation and any skewing so we can compare it to the database. A segmentation mask is a matrix grid with dimensions matching the image dimensions in pixels. Each index contains a binary integer representing whether or not that pixel is part of the object detected. We pass each mask to OpenCV and use edge detection and contouring to isolate the card out of the original image. Since we expect cards to be a rectangle with four straight edges, we can filter out any detections that have more or less than four edges. The four corners of the card are identified and pulled to reach the corners of the image canvas. This is perspective transform. A card that was skewed or crooked has been corrected to appear as if it is being viewed perfectly straight on. The card image is also oriented to portrait in this process. It may or may not be upside down, but we can worry about that later.
 
 ## 3. Image Hashing
 
