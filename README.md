@@ -97,13 +97,13 @@ During testing, I found OpenCV edge detection has difficulty detecting cards in 
 
 #### Why not use deep learning for the whole process including identification?
 
-This would mean training a model not on a single class as I did, but on almost 20,000 classes, one for each card. Even at a mere (and likely inadequate) 1000 images per class/card, that would equal a huge training dataset of 20 million images. Not only that, but each time new cards are released, the model would need to be retrained on those new cards and redeployed. Inference with large models requires enormous amounts of memory and CPU power and may still take several seconds to produce a result. Both inference and training time would be much longer.
+This would mean training a model not on a single class as I did, but on almost 20,000 classes, one for each card. Even at a mere (and likely inadequate) 1000 images per class/card, that would equal a huge training dataset of 20 million images. Not only that, but each time new cards are released, the model would need to be retrained on those new cards and redeployed. Inference with large models requires enormous amounts of memory and compute and may still take several seconds to produce a result. Both inference and training time would be unreasonably long.
 
 Remember, the goal of this project is to be able to run on-device inference real-time directly on mobile, not with some delay through a remote server. The model plus the rest of the scanning process must be as light and as fast as possible to run at least a few frames per second to provide a good user experience.
 
 ## Acknowledgements
 
-- [OpenMMLab mmDetection](https://github.com/open-mmlab/mmdetection)
+- [OpenMMLab](https://github.com/open-mmlab/mmdetection)
 - [OpenCV](https://opencv.org/)
 - [SORT](https://github.com/abewley/sort)
 - [ImageHash](https://pypi.org/project/ImageHash/)
