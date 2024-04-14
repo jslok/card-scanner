@@ -87,7 +87,7 @@ Using a simple hamming distance formula, hash strings are compared and, within a
 
 ## Conclusion
 
-I combined the versatility of a machine learning model with the speed of OpenCV and Image hashing to create a fast, accurate, and very versatile card scanner. When new cards are released, the hash database is easily updated while the model and all detection logic remains unchanged. The database used in this demo only consists of Pokémon cards but can easily be expanded to include any other types of trading cards and even other types of products as well.
+I combined the versatility of a machine learning model with the speed of OpenCV and Image hashing to create a fast and accurate trading card scanner. When new cards are released, the hash database is easily updated while the model and all detection logic remains unchanged. The database used in this demo only consists of Pokémon cards but can easily be expanded to include any other types of trading cards and even other types of products as well.
 
 ## FAQ
 
