@@ -45,7 +45,7 @@ Examples of training images with segmentation annotations drawn:
   </tr>
 </table>
 
-You can see clear improvements in the inference results after training optimizations to reach .90 mask mAP (top right) and the model can even predict edges of cards that are partially occluded (bottom right).
+You can see clear improvements in the inference results after training optimizations for the model to be very accurate with high confidence scores (top right) and it can even predict edges of cards that are partially occluded (bottom right).
 
 <table style="width: 400px; text-align: center; border: 0;">
   <tr>
