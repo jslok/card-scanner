@@ -89,6 +89,21 @@ Using a simple hamming distance formula, hash strings are compared and, within a
 
 I combined the versatility of a machine learning model with the speed of OpenCV and Image hashing to create a fast and accurate trading card scanner. When new cards are released, the hash database is easily updated while the model and all detection logic remains unchanged. The database used in this demo only consists of Pokémon cards but can easily be expanded to include any other types of trading cards and even other types of products as well.
 
+## Next Steps
+
+**Deployment to TFlite**
+Part of the next steps of integrating the scanner into a React-Native mobile app is deploying the ML model as a TensorFlow Lite model. TF Lite is designed to be lightweight for mobile devices and provides APIs for hardware acceleration. Converting a model from PyTorch to TF Lite involves first converting from PyTorch to Onnx format, Onnx format to TensorFlow, then TensorFlow to TF Lite. I have completed this step of converting my model to TF Lite but it remains in float32 datatype format.
+
+**Quantization**
+One challenge I have had is model quantization, a technique to reduce the memory usage and speed up inference by converting the model from using higher precision float32 numbers to lower precision int8. Quantization is instrumental to getting the model running fast and efficiently on mobile devices. We can expect about a 300% increase in inference speed and 75% reduction in memory footprint. I've already tried quantization as an Onnx model, TF model, and TF Lite model but the processes either fail or the quantized model gives incorrect results. I believe the high complexity of RTM-Det and especially the post-processing steps is incompatible with the post-training quantization through those respective APIs. Work in progress as I explore other ways to solve this issue.
+
+**Implement VP Tree**
+Finding a match for the hash strings in the database is currently O(n) time complexity using a simple for loop. I decided after testing that it is not important to optimize this
+step for the proof of concept. When the project is ported and integrated into a React-Native app, I will implement a VP tree to facilitate the database search which is O(nlogn) time complexity.
+
+**Port to C++**
+I will convert all of the relevant Python code to C++ in order to integrate this scanner into a React-Native mobile application.
+
 ## FAQ
 
 #### Why not skip the deep learning model and just use OpenCV edge detection to detect the cards?
