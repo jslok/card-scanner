@@ -91,10 +91,10 @@ I combined the versatility of a machine learning model with the speed of OpenCV 
 
 ## Next Steps
 
-&#10004; **Deployment to TFlite**
+✅ **Deployment to TFlite**
 Part of the next steps of integrating the scanner into a React-Native mobile app is deploying the ML model as a TensorFlow Lite model. TF Lite is designed to be lightweight for mobile devices and provides APIs for hardware acceleration. Converting a model from PyTorch to TF Lite involves first converting from PyTorch to Onnx format, Onnx format to TensorFlow, then TensorFlow to TF Lite. I have completed this step of converting my model to TF Lite but it remains in float32 datatype format.
 
-&#9744; **Quantization**
+🚧 **Quantization**
 One challenge I have had is model quantization, a technique to reduce the memory usage and speed up inference by converting the model from using higher precision float32 numbers to lower precision int8. Quantization is instrumental to getting the model running fast and efficiently on mobile devices. We can expect about a 300% increase in inference speed and 75% reduction in memory footprint. I've already tried quantization as an Onnx model, TF model, and TF Lite model but the processes either fail or the quantized model gives incorrect results. I believe the high complexity of RTM-Det and especially the post-processing steps is incompatible with the post-training quantization through those respective APIs. Work in progress as I explore other ways to solve this issue.
 
 &#9744; **Implement VP Tree**
