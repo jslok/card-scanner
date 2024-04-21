@@ -5,7 +5,11 @@
   <img src="https://raw.githubusercontent.com/jslok/card-scanner/master/media/demo_mat.webp" width="400" />
 </p>
 
-This is a Pokémon card scanner that can use any video input such as webcam or phone camera to scan a card or multiple cards real-time and identify them against the complete database of currently about 20,000 English Pokémon cards. It is able to identify all types including holos, reverse holos, full art cards, etc. purely via deep learning and imaging techniques. No OCR (text recognition) is used. This is a working proof of concept built in Python with the goal of eventually porting and integrating it into my existing React Native Pokémon card collection tracking app.
+Author: Justin Lok
+
+This is a Pokémon card scanner that can use any video input such as webcam or phone camera to scan a card or multiple cards real-time and identify them against the complete database of currently about 20,000 English Pokémon cards. It is able to identify all types including holos, reverse holos, full art cards, etc. purely via deep learning and imaging techniques. No OCR (text recognition) is used.
+
+This is a working proof of concept built in Python with the goal of eventually porting and integrating it into my existing React Native Pokémon card collection tracking app. Some sample code is provided for read-only.
 
 There are 3 main steps in the process that I focused on:
 
@@ -15,7 +19,7 @@ There are 3 main steps in the process that I focused on:
 
 ## 1. Object Detection and Segmentation
 
-I trained a deep learning model to do the detection phase. Object detection models only locate the bounding box of the item in the frame, or in other words, a rectangular frame that contains the object. Unless the card image is viewed perfectly straight, the bounding box contains too much other content from the background. We need to take this a step further and find not just the bounding box, but the exact pixels representing the card, also known as the segmentation mask. After evaluating several different segmentation-capable models, I found RTM-Det to be the most viable for this situation since it is very fast based on benchmarks and ideal for mobile deployments. It’s also not bound by restrictive licenses as many other models are in the Yolo family, which is important if I were to use it in my own closed-source projects. RTM-Det also performs instance segmentation (as opposed to just semantic segmentation) which is capable of assigning a separate mask to each detection which is what I need.
+I trained a deep learning model to do the detection phase. Object detection models typically only locate the item with a bounding box in the image, or in other words, a rectangular frame that contains the object. Unless the card is viewed perfectly straight, the bounding box contains too much other content from the background. We need to take this a step further and find not just the bounding box, but the exact pixels representing the card, also known as the segmentation mask. After evaluating several different segmentation-capable models, I found RTM-Det to be the most viable for this situation since it is very fast based on benchmarks and ideal for mobile deployments. It’s also not bound by restrictive licenses as many other models are in the Yolo family, which is important if I were to use it in my own closed-source projects. RTM-Det also performs instance segmentation (as opposed to just semantic segmentation) which is capable of assigning a separate mask to each detection which is what I need.
 
 **Training**
 
@@ -95,7 +99,7 @@ I combined the versatility of a machine learning model with the speed of OpenCV 
 Part of the next steps of integrating the scanner into a React-Native mobile app is deploying the ML model as a TensorFlow Lite model. TF Lite is designed to be lightweight for mobile devices and provides APIs for hardware acceleration. Converting a model from PyTorch to TF Lite involves first converting from PyTorch to Onnx format, Onnx format to TensorFlow, then TensorFlow to TF Lite. I have completed this step of converting my model to TF Lite but it remains in float32 datatype format.
 
 🚧 **Quantization**
-One challenge I have had is model quantization, a technique to reduce the memory usage and speed up inference by converting the model from using higher precision float32 numbers to lower precision int8. Quantization is instrumental to getting the model running fast and efficiently on mobile devices. We can expect about a 300% increase in inference speed and 75% reduction in memory footprint. I've already tried quantization as an Onnx model, TF model, and TF Lite model but the processes either fail or the quantized model gives incorrect results. I believe the high complexity of RTM-Det and especially the post-processing steps is incompatible with the post-training quantization through those respective APIs. Work in progress as I explore other ways to solve this issue.
+One challenge I have had is model quantization, a technique to reduce the memory usage and speed up inference by converting the model from using higher precision float32 numbers to lower precision int8. Quantization is instrumental to getting the model running fast and efficiently on mobile devices. I've already tried quantization as an Onnx model, TF model, and TF Lite model but the processes either fail or the quantized model gives incorrect results. I believe the high complexity of RTM-Det and especially the post-processing steps is incompatible with the post-training quantization through those respective APIs. Work in progress as I explore other ways to solve this issue.
 
 &#9744; **Implement VP Tree**
 Finding a match for the hash strings in the database is currently O(n) time complexity using a simple for loop. I decided after testing that it is not important to optimize this
