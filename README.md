@@ -5,7 +5,7 @@
   <img src="https://raw.githubusercontent.com/jslok/card-scanner/master/media/demo_mat.webp" width="400" />
 </p>
 
-Author: Justin Lok
+by Justin Lok
 
 Welcome to the Pokémon card scanner that can use any video input such as webcam or phone camera to scan a card or multiple cards real-time and identify them against the complete database of currently about 20,000 English Pokémon cards. It is able to identify all types including holos, reverse holos, full art cards, etc. purely via deep learning and imaging techniques. No OCR (text recognition) is used.
 
