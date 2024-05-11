@@ -1,4 +1,6 @@
 
+# Collection of functions that process the detections from the detector
+
 import cv2
 import numpy as np
 import imagehash
@@ -88,23 +90,6 @@ def findMatch(hash_a):
     return matchString, min_sim
 
 
-# def findMatchBak(hash_a):
-#     hash_dict = get_hashes('hashes64x64.txt')
-#     best_match = None
-#     min_similarity = 14 # lower is more exact
-#
-#     for card_id, hash_b in hash_dict.items():
-#         similarity = hash_a - hash_b # lower = better
-#         if similarity < min_similarity:
-#             min_similarity = similarity
-#             best_match = card_id
-#
-#     if best_match is not None:
-#         hash_b = hash_dict[best_match]
-#         similarity = hash_a - hash_b
-#     return best_match
-
-
 def findFlippedMatch(card_image):
     card_image = cv2.rotate(card_image, cv2.ROTATE_180)
     image_hash = hashImage(card_image)
@@ -134,35 +119,6 @@ def writeCardLabels(image, detections):
         center_y = int((bbox[1] + bbox[3]) / 2)
         center = (center_x, center_y)
         writeLabel(image, center, detection['match'])
-
-
-def writeLabelRotated(img, loc, text, rotation=-20):
-    # Define the main text and its properties
-    font_face = cv2.FONT_HERSHEY_SIMPLEX
-    font_scale = .2
-    thickness = 2
-    text_color = (255, 255, 255)
-
-    # Calculate the size of the main text
-    text_size, _ = cv2.getTextSize(text, font_face, font_scale, thickness)
-
-    # Define the position and rotation of the main text
-    [main_x, main_y] = loc
-
-    # Calculate the rotation matrix for the main text
-    rotation_matrix = cv2.getRotationMatrix2D((main_x, main_y), rotation, 1)
-
-    # Create a black image with the same size as the input image
-    text_img = np.zeros_like(img)
-
-    # Add the main text to the text image with rotation
-    cv2.putText(text_img, text, (main_x, main_y), font_face, font_scale, text_color, thickness, cv2.LINE_AA)
-    rotated_text_img = cv2.warpAffine(text_img, rotation_matrix, (img.shape[1], img.shape[0]))
-
-    # Overlay the rotated main text on the input image
-    result = cv2.add(img, rotated_text_img)
-
-    return result
 
 
 def writeLabel(image, loc, text):

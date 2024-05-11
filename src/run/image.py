@@ -1,4 +1,6 @@
 
+# Run inference on a single image
+
 import cv2
 from scanner.tools import scanner
 from scanner.tools import detector as detect

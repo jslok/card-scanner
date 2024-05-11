@@ -1,4 +1,6 @@
 
+# Run inference on a connected webcam real time
+
 import cv2
 import scanner
 from scanner.tools import detector as detect

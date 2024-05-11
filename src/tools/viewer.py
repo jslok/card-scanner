@@ -1,3 +1,6 @@
+
+# Creates an image viewer to save an image or collection of images together as a video
+
 import cv2
 import numpy as np
 import datetime

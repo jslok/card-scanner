@@ -1,3 +1,6 @@
+
+# Tracks the detections between frames
+
 import numpy as np
 from sort.sort import Sort
 

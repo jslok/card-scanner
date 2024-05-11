@@ -1,4 +1,6 @@
 
+# Run inference on video feed from a phone connected via usb cable or over ip
+
 import cv2
 from scanner.tools import scanner
 from scanner.tools import detector as detect

@@ -1,3 +1,6 @@
+
+# Creates the PyTorch inferencer/detector
+
 from mmdet.apis import DetInferencer
 import numpy as np
 import torch
