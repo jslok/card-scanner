@@ -107,7 +107,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# download all images for all current sets
-# hash all to text file
-# add all hashes to vp tree
