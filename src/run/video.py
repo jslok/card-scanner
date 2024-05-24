@@ -15,7 +15,7 @@ size = 1080
 scoreThreshold = .5
 use_object_tracking = True
 show_video = False
-multiprocessing_enabled = True
+multiprocessing_enabled = False
 
 # detection = {
 #     bbox,mask,score,label,track_id,hash, card_image,match
@@ -106,11 +106,11 @@ def main():
 
 
         # Draw elements
-        # scanner.drawBoxes(image_copy, detections)
-        # scanner.drawMasks(image_copy, detections)
-        # scanner.writeCardLabels(image_copy, detections)
-        # scanner.writeTrackId(image_copy, detections)
-
+        scanner.drawBoxes(image_copy, detections)
+        scanner.drawMasks(image_copy, detections)
+        scanner.writeCardLabels(image_copy, detections)
+        scanner.writeTrackId(image_copy, detections)
+        
         frame_builder.add_image(image_copy)
 
         # Write the processed frame to the output video
