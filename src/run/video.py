@@ -1,6 +1,4 @@
 
-# Run inference on a prerecorded video
-
 import cv2
 from scanner.tools import scanner
 from scanner.tools import detector as detect
@@ -8,11 +6,11 @@ from scanner.tools import tracker as track
 from scanner.tools import viewer
 import multiprocessing
 import datetime
+import time
 
-
-model = '../../rtm_det_card_trainer.py'
-weights = "../../work_dirs/rtm_det_card_trainer/epoch_10.pth"
-video_path = '../media/binder3.mp4'
+model = '../rtm_det_card_trainer.py'
+weights = "../work_dirs/rtm_det_card_trainer/epoch_10.pth"
+video_path = './media/binder3.mp4'
 size = 1080
 scoreThreshold = .5
 use_object_tracking = True
@@ -54,6 +52,9 @@ def main():
     # Define the codec and create a VideoWriter object
     # codec = cv2.VideoWriter_fourcc(*'mp4v')  # Codec for MP4 video
     # output_video = cv2.VideoWriter(f'output/{output_path}', codec, fps, (size, size))
+
+    # Record the start time
+    start_time = time.time()
 
     # Create a multiprocessing Pool
     pool = multiprocessing.Pool(12)
@@ -101,18 +102,17 @@ def main():
                 match = detection['match']
                 if track_id not in tracked_matches:
                     tracked_matches[track_id] = match
-                    print(f'Match found: id {track_id} {match}')
+                    # print(f'Match found: id {track_id} {match}')
 
-        # frame_builder.add_image(image_original)
+
         # Draw elements
-        scanner.drawBoxes(image_copy, detections)
-        # frame_builder.add_image(image_copy)
-        scanner.drawMasks(image_copy, detections)
-        # frame_builder.add_image(image_copy)
-        scanner.writeCardLabels(image_copy, detections)
-        #frame_builder.add_image(image_copy)
-        scanner.writeTrackId(image_copy, detections)
+        # scanner.drawBoxes(image_copy, detections)
+        # scanner.drawMasks(image_copy, detections)
+        # scanner.writeCardLabels(image_copy, detections)
+        # scanner.writeTrackId(image_copy, detections)
+
         frame_builder.add_image(image_copy)
+
         # Write the processed frame to the output video
         #output_video.write(image_copy)
 
@@ -148,6 +148,12 @@ def main():
     print('Video saved')
 
     cv2.destroyAllWindows()
+
+    # Record the end time
+    end_time = time.time()
+
+    # Print the total time taken
+    print("Total time taken: ", round(end_time - start_time, 1), ' seconds')
 
 
 if __name__ == '__main__':
