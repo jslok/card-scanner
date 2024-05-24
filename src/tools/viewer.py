@@ -1,10 +1,6 @@
-
-# Creates an image viewer to save an image or collection of images together as a video
-
 import cv2
 import numpy as np
 import datetime
-from scanner.tools import scanner
 
 class VideoFrameBuilder:
     _instance = None
@@ -113,7 +109,11 @@ class VideoFrameBuilder:
             # Check for key press to save a screenshot or quit
             key = cv2.waitKey(self.is_video) & 0xFF
             if key == ord('s'):  # Check if 'S' key is pressed
-                scanner.save_screenshot(self.last_frame)
+                current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                # Write the image to a file
+                screenshot_filename = f'output/screenshots/screenshot_{current_time}.png'
+                cv2.imwrite(screenshot_filename, img)
+                print(f"Screenshot saved to '{screenshot_filename}'")
             elif key == ord('q'):  # Check if 'q' key is pressed
                 exit()  # Close the window
 
